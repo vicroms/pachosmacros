@@ -34,7 +34,8 @@ async function damageBonus(effect, workflow) {
 
 async function targetHitTracking(effect, roundNumber) {
   if (effect.changes.find(c => c.key === LAST_HIT_ROUND_KEY)) { 
-    effect.changes[2].value = roundNumber
+    const i = effect.changes.findIndex(c => c.key === LAST_HIT_ROUND_KEY)
+    effect.changes[i].value = roundNumber
     let newEffect = { _id: effect._id, changes: effect.changes }
     await actor.updateEmbeddedDocuments("ActiveEffect", [newEffect])
   } else {
