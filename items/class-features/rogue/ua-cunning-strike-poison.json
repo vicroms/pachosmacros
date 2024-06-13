@@ -1,0 +1,221 @@
+{
+    "name": "Cunning Strike - Poison",
+    "type": "feat",
+    "system": {
+      "activation": {
+        "type": "special",
+        "cost": null,
+        "condition": ""
+      },
+      "description": {
+        "value": "<p><strong>Poison (Cost: 1d6).</strong> You add a toxin to your strike, forcing the target to make a Constitution saving throw. On a failed save, the target has the Poisoned condition for 1 minute. At the end of each of its turns, the Poisoned target can repeat the save, ending the effect on itself on a success. To use this effect, you must have a @UUID[Compendium.dnd5e.items.Item.il2GNi8C0DvGLL9P]{Poisoner's Kit} on your person.</p>",
+        "chat": ""
+      },
+      "source": {},
+      "duration": {
+        "value": "",
+        "units": ""
+      },
+      "cover": null,
+      "crewed": false,
+      "target": {
+        "value": null,
+        "width": null,
+        "units": "",
+        "type": "creature",
+        "prompt": true
+      },
+      "range": {
+        "value": null,
+        "long": null,
+        "units": ""
+      },
+      "uses": {
+        "value": null,
+        "max": "",
+        "per": null,
+        "recovery": "",
+        "prompt": true
+      },
+      "consume": {
+        "type": "",
+        "target": null,
+        "amount": null,
+        "scale": false
+      },
+      "ability": null,
+      "actionType": "save",
+      "attack": {
+        "bonus": "",
+        "flat": false
+      },
+      "chatFlavor": "",
+      "critical": {
+        "threshold": null,
+        "damage": ""
+      },
+      "damage": {
+        "parts": [],
+        "versatile": ""
+      },
+      "formula": "",
+      "save": {
+        "ability": "con",
+        "dc": null,
+        "scaling": "dex"
+      },
+      "summons": null,
+      "type": {
+        "value": "class",
+        "subtype": ""
+      },
+      "properties": [],
+      "requirements": "",
+      "recharge": {
+        "value": null,
+        "charged": false
+      }
+    },
+    "img": "homebrew/icons/bg3/skills_png/actions/Action_MagicItem_PoisonLethality.webp",
+    "effects": [
+      {
+        "changes": [
+          {
+            "key": "flags.midi-qol.disadvantage.attack.all",
+            "mode": 0,
+            "value": "1",
+            "priority": 0
+          },
+          {
+            "key": "flags.midi-qol.disadvantage.ability.check.all",
+            "mode": 0,
+            "value": "1",
+            "priority": 0
+          },
+          {
+            "key": "macro.execute",
+            "mode": 0,
+            "value": "SaveOnEnd con @abilities.dex.dc",
+            "priority": 20
+          }
+        ],
+        "description": "<p>- A poisoned creature has disadvantage on attack rolls and ability checks.</p>",
+        "disabled": false,
+        "duration": {
+          "rounds": null,
+          "seconds": 60,
+          "turns": null,
+          "startTime": null,
+          "combat": null,
+          "startRound": null,
+          "startTurn": null
+        },
+        "flags": {
+          "dfreds-convenient-effects": {
+            "isConvenient": true,
+            "isDynamic": false,
+            "isViewable": true,
+            "nestedEffects": [],
+            "subEffects": []
+          },
+          "core": {
+            "overlay": false,
+            "sourceId": "Actor.i0SLtJEUReOhvfhV.ActiveEffect.F2Su7ZAPUj18kBgh"
+          },
+          "dae": {
+            "stackable": "noneNameOnly",
+            "specialDuration": [],
+            "disableIncapacitated": false,
+            "selfTarget": false,
+            "selfTargetAlways": false,
+            "dontApply": false,
+            "showIcon": false,
+            "durationExpression": "",
+            "macroRepeat": "endEveryTurn"
+          },
+          "ActiveAuras": {
+            "isAura": false,
+            "aura": "None",
+            "nameOverride": "",
+            "radius": "",
+            "alignment": "",
+            "type": "",
+            "customCheck": "",
+            "ignoreSelf": false,
+            "height": false,
+            "hidden": false,
+            "displayTemp": false,
+            "hostile": false,
+            "onlyOnce": false,
+            "wallsBlock": "system"
+          }
+        },
+        "icon": "modules/dfreds-convenient-effects/images/poisoned.svg",
+        "name": "Poisoned",
+        "origin": "Actor.Gh4kxzpsX9pW5rml.Item.lfycQqKdHuHgvUaK",
+        "tint": null,
+        "transfer": false,
+        "statuses": [
+          "Convenient Effect: Poisoned",
+          "poisoned"
+        ],
+        "_id": "8OFDDxIHoKdnjtqD"
+      }
+    ],
+    "folder": "ygkq9OUVNZETjso6",
+    "flags": {
+      "scene-packer": {
+        "hash": "7390f9489b2a937ebd06776e0d977a3e73829942",
+        "sourceId": "Item.XmLhVyPzxcRDvVAZ"
+      },
+      "core": {},
+      "magicitems": {
+        "enabled": false,
+        "default": "",
+        "equipped": false,
+        "attuned": false,
+        "charges": "0",
+        "chargeType": "c1",
+        "destroy": false,
+        "destroyFlavorText": "reaches 0 charges: it crumbles into ashes and is destroyed.",
+        "rechargeable": false,
+        "recharge": "0",
+        "rechargeType": "t1",
+        "rechargeUnit": "r1",
+        "sorting": "l"
+      },
+      "midiProperties": {
+        "confirmTargets": "default",
+        "autoFailFriendly": false,
+        "autoSaveFriendly": false,
+        "critOther": false,
+        "offHandWeapon": false,
+        "magicdam": false,
+        "magiceffect": false,
+        "concentration": false,
+        "noConcentrationCheck": false,
+        "toggleEffect": false,
+        "ignoreTotalCover": false
+      },
+      "midi-qol": {
+        "rollAttackPerTarget": "default",
+        "itemCondition": "",
+        "effectCondition": ""
+      },
+      "exportSource": {
+        "world": "pachosclan",
+        "system": "dnd5e",
+        "coreVersion": "11.315",
+        "systemVersion": "3.1.2"
+      }
+    },
+    "_stats": {
+      "systemId": "dnd5e",
+      "systemVersion": "3.1.2",
+      "coreVersion": "11.315",
+      "createdTime": 1717037887937,
+      "modifiedTime": 1717209293012,
+      "lastModifiedBy": "L2oPGhMyV7YTPI2h"
+    }
+  }
+  
