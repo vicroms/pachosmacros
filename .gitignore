@@ -1,4 +1,5 @@
 *.log
-*/LOCK
-*/LOG*
-*/MANIFEST*
+*.old
+LOCK
+LOG
+MANIFEST-*
