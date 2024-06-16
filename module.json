@@ -1,0 +1,71 @@
+{
+  "id": "pachos-compendium",
+  "title": "Pachos Compendium",
+  "version": "1.0.0",
+  "url": "https://github.com/vicroms/pachosmacros",
+  "manifest": "https://github.com/vicroms/pachosmacros/module.json",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "esmodules": [
+    "scripts/module.js"
+  ],
+  "packs": [
+    {
+      "name": "pachos-actors",
+      "label": "Pachos Actors",
+      "path": "packs/pachos-actors",
+      "type": "Actor",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "pachos-feats",
+      "label": "Pachos Feats",
+      "path": "packs/pachos-feats",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "pachos-macros",
+      "label": "Pachos Macros",
+      "path": "packs/pachos-macros",
+      "type": "Macro",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "pachos-items",
+      "label": "Pachos Items",
+      "path": "packs/pachos-items",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "pachos-spells",
+      "label": "Pachos Spells",
+      "path": "packs/pachos-spells",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ]
+}
