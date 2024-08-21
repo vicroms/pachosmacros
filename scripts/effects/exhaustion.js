@@ -1,4 +1,4 @@
-import {effectsData} from '../config/effects.js'
+﻿import {effectsData} from '../config/effects.js'
 
 async function selectExhaustionLevel({actor}) {
   let optionContent = ''
@@ -20,27 +20,27 @@ async function selectExhaustionLevel({actor}) {
               label: `Ok`,
               callback: (html) => {
                   let exhaustionLevel = html.find('[name=level]')[0].value
-                  applyExhaustion(exhaustionLevel) },
+                  applyExhaustion(actor, exhaustionLevel) },
           Cancel: {
               label: `Cancel`
           }}}})
       .render(true)
-   
-  async function applyExhaustion(exhaustionLevel) {
-    let effect = actor.appliedEffects.find(e => e.name.startsWith("Exhaustion"))
-    if (exhaustionLevel === "0" && effect !== undefined) {
-      effect.delete()
-      return
-    }
-    if (effect === undefined) {
-      await actor.createEmbeddedDocuments("ActiveEffect", [effectsData.exhaustion])
-      effect = actor.appliedEffects.find(e => e.name === "Exhaustion")
-    }
-    await effect.update({
-      'name': `Exhaustion - ${exhaustionLevel}`,
-      'flags.dae.stacks': exhaustionLevel
-    }) 
+}
+
+async function applyExhaustion(actor, exhaustionLevel) {
+  let effect = actor.appliedEffects.find(e => e.name.startsWith("Exhaustion"))
+  if (exhaustionLevel === "0" && effect !== undefined) {
+    effect.delete()
+    return
   }
+  if (effect === undefined) {
+    await actor.createEmbeddedDocuments("ActiveEffect", [effectsData.exhaustion])
+    effect = actor.appliedEffects.find(e => e.name === "Exhaustion")
+  }
+  await effect.update({
+    'name': `Exhaustion - ${exhaustionLevel}`,
+    'flags.dae.stacks': exhaustionLevel
+  }) 
 }
 
 export let exhaustion = {
