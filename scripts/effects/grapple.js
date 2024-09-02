@@ -1,4 +1,4 @@
-import { effectsData } from "../config/effects.js"
+import { effectFactory } from "../config/effects.js"
 
 async function start({token, actor, workflow}) {
   const targets = Array.from(workflow.targets)
@@ -9,7 +9,7 @@ async function start({token, actor, workflow}) {
 
   async function didFinishGrappleRoll(res) {
     if (res.passed.id !== targets[0].id) {
-      await MidiQOL.socket().executeAsGM('createEffects', {actorUuid: targets[0].actor.uuid, effects: [effectsData.grapple(dc, actor.uuid)]})
+      await MidiQOL.socket().executeAsGM('createEffects', {actorUuid: targets[0].actor.uuid, effects: [effectFactory.grapple(dc, actor.uuid)]})
     }
   }
 }

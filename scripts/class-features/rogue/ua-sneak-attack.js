@@ -130,33 +130,33 @@ async function showCunningStrikeDialog(autoSneak, rogueLevels) {
         content: `<p>Use Cunning Strike effect?</p>`,
         buttons: {
           noextraeffect: {
-            icon: '<img src="homebrew/icons/bg3/skills_png/actions/Action_SneakAttack_Melee.webp"></img>',
+            icon: '<img src=""></img>',
             label: "No Effect",
             callback: () => { resolve({ effect: CS.NONE, cost: 0 }) }
           },
           disarm: {
             //icon: '<i class="fas fa-check"></i>',
-            icon: '<img src="homebrew/icons/bg3/skills_png/actions/Action_DisarmingAttack_Melee.webp"></img>',
+            icon: '<img src=""></img>',
             label: "Disarm",
             callback: () => { resolve({ effect: CS.DISARM, cost: 1 }) }
           },
           poison: {
-            icon: '<img src="homebrew/icons/bg3/skills_png/actions/Action_MagicItem_PoisonLethality.webp"></img>',
+            icon: '<img src=""></img>',
             label: "Poison",
             callback: () => { resolve({ effect: CS.POISON, cost: 1 }) }
           },
           trip: {
-            icon: '<img src="homebrew/icons/bg3/skills_png/actions/Action_Trip.webp"></img>',
+            icon: '<img src=""></img>',
             label: "Trip",
             callback: () => { resolve({ effect: CS.TRIP, cost: 1 }) }
           },
           withdraw: {
-            icon: '<img src="homebrew/icons/bg3/skills_png/actions/Action_SupremeSneak.webp"></img>',
+            icon: '<img src=""></img>',
             label: "Withdraw",
             callback: () => { resolve({ effect: CS.WITHDRAW, cost: 1 }) }
           },
           none: {
-            icon: '<i class="fas fa-times"></i>',
+            icon: '<img src=""></img>',
             label: "None",
             callback: () => { resolve(false) }
           }

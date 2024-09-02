@@ -1,3 +1,5 @@
+import { exhaustion } from "../effects/exhaustion.js"
+
 async function didCastSpell({item, actor, token}) {
   const dc = 10 + (item.system.level * 2)
   let promise = new Promise((resolve, reject) => {
@@ -10,7 +12,7 @@ async function didCastSpell({item, actor, token}) {
       rollMode: 'roll',
       callback: async(args) => {
         if (args.failed) {
-          applyExhaustion(actor.uuid)
+          applyExhaustion(actor)
           if ((await new Roll('1d4').evaluate()).total === 1) {
             ChatMessage.create({
               content: `Remember to add another exhaustion to ${actor.name} later!!`,
@@ -26,8 +28,8 @@ async function didCastSpell({item, actor, token}) {
   const results = await promise
 }
 
-async function applyExhaustion(uuid) {
-  await game.dfreds.effectInterface.addEffect({effectName: 'Exhaustion', uuid: uuid})
+async function applyExhaustion(actor) {
+  exhaustion.apply(actor)
 }
 
 export let runebloodSpell = {

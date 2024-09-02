@@ -1,4 +1,4 @@
-﻿import {effectsData} from '../config/effects.js'
+﻿import {effectFactory, effectHelper, effectTags} from '../config/effects.js'
 
 async function selectExhaustionLevel({actor}) {
   let optionContent = ''
@@ -28,18 +28,28 @@ async function selectExhaustionLevel({actor}) {
 }
 
 async function applyExhaustion(actor, exhaustionLevel) {
-  let effect = actor.appliedEffects.find(e => e.name.startsWith("Exhaustion"))
-  if (exhaustionLevel === "0" && effect !== undefined) {
+  let eLevel = exhaustionLevel
+  const exhaustionEffects = effectHelper.filter(actor, effectTags.exhaustion)
+  let effect = exhaustionEffects === undefined || exhaustionEffects.length === 0 ? undefined : exhaustionEffects[0]
+
+  if (exhaustionLevel === undefined) {
+    if (effect === undefined) {
+      eLevel = 1
+    } else {
+      eLevel = parseInt(effect.flags.dae.stacks) + 1
+    }
+  }
+  else if (eLevel === `${0}` && effect !== undefined) {
     effect.delete()
     return
   }
   if (effect === undefined) {
-    await actor.createEmbeddedDocuments("ActiveEffect", [effectsData.exhaustion])
+    await MidiQOL.socket().executeAsGM('createEffects', {actorUuid: actor.uuid, effects: [effectFactory.exhaustion]})
     effect = actor.appliedEffects.find(e => e.name === "Exhaustion")
   }
   await effect.update({
-    'name': `Exhaustion - ${exhaustionLevel}`,
-    'flags.dae.stacks': exhaustionLevel
+    'name': `Exhaustion - ${eLevel}`,
+    'flags.dae.stacks': eLevel
   }) 
 }
 
