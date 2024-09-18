@@ -21,9 +21,7 @@ async function selectExhaustionLevel({actor}) {
               callback: (html) => {
                   let exhaustionLevel = html.find('[name=level]')[0].value
                   applyExhaustion(actor, exhaustionLevel) },
-          Cancel: {
-              label: `Cancel`
-          }}}})
+          Cancel: { label: `Cancel` }}}})
       .render(true)
 }
 
@@ -47,7 +45,14 @@ async function applyExhaustion(actor, exhaustionLevel) {
     await MidiQOL.socket().executeAsGM('createEffects', {actorUuid: actor.uuid, effects: [effectFactory.exhaustion]})
     effect = actor.appliedEffects.find(e => e.name === "Exhaustion")
   }
+
+  let newChanges = structuredClone(effect.changes)
+  newChanges[1].value = `${-eLevel*2}`
+  newChanges[3].value = `${-eLevel*2}`
+  newChanges[4].value = `${-eLevel*5}`
+
   await effect.update({
+    'changes': newChanges,
     'name': `Exhaustion - ${eLevel}`,
     'flags.dae.stacks': eLevel
   }) 

@@ -17,7 +17,7 @@ const exhaustionEffect = {
     {
       "key": "system.bonuses.All-Attacks",
       "mode": 2,
-      "value": "-@stackCount*2",
+      "value": "-(@stackCount*2)",
       "priority": 20
     },
     {
@@ -29,13 +29,13 @@ const exhaustionEffect = {
     {
       "key": "system.bonuses.abilities.check",
       "mode": 2,
-      "value": "-@stackCount*2",
+      "value": "-(@stackCount*2)",
       "priority": 20
     },
     {
       "key": "system.attributes.movement.all",
       "mode": 0,
-      "value": "-5*@stackCount",
+      "value": "-(5*@stackCount)",
       "priority": 20
     }
   ],

@@ -12,6 +12,10 @@ import {effectFactory, effectHelper} from './config/effects.js'
 import {itemUse} from './gm-tools/item-use.js'
 import {firefeather} from './items/firefeather.js'
 import {companion} from './mechanics/mcdm-companion/companion.js'
+import {battleOfTheBands} from './mechanics/battle-of-the-bands.js'
+import {hud} from './gm-tools/hud/hud.js'
+import {quickInsert} from './gm-tools/quick-insert.js'
+import {onHit} from './effects/retaliation.js'
 
 export let spells = {
   'huntersMark': huntersMark
@@ -25,19 +29,23 @@ export let classFeats = {
 
 export let mechanics = {
   'runebloodBlessingSpell': runebloodSpell,
-  'companion': companion
+  'companion': companion,
+  'battleOfTheBands': battleOfTheBands
 }
 
 export let gmTools = {
   'showContent': showContent,
-  'itemUse': itemUse
+  'itemUse': itemUse,
+  'hud': hud,
+  'quickInsert': quickInsert
 }
 
 export let effects = {
   'compelledDuel': compelledDuel,
   'exhaustion': exhaustion,
   'grapple': grapple,
-  'burning': burning
+  'burning': burning,
+  'onHit': onHit
 }
 
 export let helpers = {

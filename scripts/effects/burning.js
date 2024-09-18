@@ -27,10 +27,10 @@ async function applyOnSaveFail(damageExpression, damageType, dc, abi, workflow) 
   const options = { showFullCard: false, createWorkflow: true, versatile: false, configureDialog: false, targetUuids: targets}
   let workflow2 = await MidiQOL.completeItemUse(item, {}, options);
 
-  if (workflow2.saves.first() !== undefined) { return }
-  for (let t of workflow2.saves) {
+  if (workflow2.saves.size === workflow2.targets.size) { return }
+  for (let t of workflow2.targets.filter(t => workflow2.saves.find(s => s === t) === undefined)) {
     applyEffect(damageExpression, damageType, workflow.item, t.actor)  
-  } 
+  }
 }
 
 async function applyEffect(damageExpression, damageType, item, actor) {
@@ -39,6 +39,7 @@ async function applyEffect(damageExpression, damageType, item, actor) {
   if (burningEffects.find(e => e.origin === itemUuid)) { return }
   const effect = effectFactory.burning(damageExpression, damageType, itemUuid, item.name)
   await MidiQOL.socket().executeAsGM('createEffects', { actorUuid: actor.uuid, effects: [effect] })
+  setTimeout(function() { addFavorites(actor, ['Remove Burning']) }, 2000) 
 }
 
 async function endEffect({ actor }) {
@@ -49,10 +50,17 @@ async function endEffect({ actor }) {
   }
 }
 
+async function addFavorites(actor, itemNames) {
+  for (const name of itemNames) {
+    const identifier = actor.items.find(i => i.name === name).id
+    await actor.system.addFavorite({type: "item", id: `.Item.${identifier}`})
+  }
+} 
+
 async function load({args}) {
   if (args[0] !== 'on') { return }
   const lastArgs = args[args.length-1]
-  let effectData = effectFactory.burning(args[1], args[2], lastArgs.origin, "Some Item")
+  let effectData = effectFactory.burning(args[1], args[2], lastArgs.origin, lastArgs.efData.name)
   effectData._id = lastArgs.effectId
   await MidiQOL.socket().executeAsGM('updateEffects', {'actorUuid': lastArgs.actorUuid, 'updates': [effectData]})
 }

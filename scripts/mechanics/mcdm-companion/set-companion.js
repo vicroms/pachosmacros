@@ -8,25 +8,24 @@ const OWNERSHIP = {
 export async function setupLink() {
   let companions = game.folders.getName("ActiveCompanions").contents.map(x => game.actors.getName(x.name));
   const users = game.users.filter(u => !u.isGM).map(u => { return { id: u.id, name: u.name, character: u.character }; });
-  displayAssignmentDialog(users, companions)  
+  displayAssignmentDialog(users, companions)
 }
 
 async function displayAssignmentDialog(users, companions) {
-  const companion_options = companions.map(a => { return `<option value="${a.uuid}">${a.name}</option>`; }).join('\r\n');  
-  const player_rows = users.map(u => {
-      return `
-  <tr>
-    <td><label>${u.name}</label></td>
-    <td>
-      <select id="select-${u.id}" style="width: 100%">
-        <option value="0">No changes</option/>
-        ${companion_options}
-      </select>
-    </td>
-  </tr>
-  `
-  }).join('\r\n');
-  
+  const companion_options = companions.map(a => { return `<option value="${a.uuid}">${a.name}</option>`; }).join('\r\n');
+  const player_rows = users
+    .map(u => { return `
+      <tr>
+      <td><label>${u.name}</label></td>
+      <td>
+        <select id="select-${u.id}">
+          <option value="0">No changes</option/>
+            ${companion_options}
+          </select>
+        </td>
+      </tr>`
+    }).join('\r\n');
+
   const FORM_CONTENT = `
   <form>
     <table>
@@ -40,40 +39,42 @@ async function displayAssignmentDialog(users, companions) {
         <tr>
           <td><label>Default</label></td>
           <td>
-            <select id="select-default" style="width: 100%">
+            <select id="select-default">
               <option value="NONE">None</option>
               <option value="LIMITED">Limited</option>
-              <option value="OBSERVER">Observer</option>"Compa
+              <option value="OBSERVER">Observer</option>
+            </select>
+          </td>
         </tr> 
         ${player_rows}
       </tbody>
     </table>
   </form>
   `;
-  
-  new Dialog({
-    title: 'Select companions',
+
+  new foundry.applications.api.DialogV2({
+    window: { title: 'Select companions' },
     content: FORM_CONTENT,
-    buttons: {
-      ok: { 
-        label: 'OK',
-        callback: (html) => setCompanions(html, users, companions)
-      },
-      cancel: { 
-        label: 'Cancel'
+    buttons: [{
+      action: "ok",
+      label: "OK",
+      default: true,
+      callback: (event, button, dialog) => {
+        let html = button.form.elements
+        setCompanions(html, users, companions)
       }
-    }
-  }).render(true);
+    }],
+  }).render({ force: true });
 }
 
 async function setCompanions(html, users, companions) {
-  const defaultOwnership = html.find('select#select-default').val();
-    
+  
+  const defaultOwnership = html['select-default'].value
+
   for (const u of users) {
-    const INPUT_ID = `select#select-${u.id}`;
-    const companionId = html.find(`${INPUT_ID}`).val();
-    const companionName = html.find(`${INPUT_ID} option:selected`).text();
-    console.log(`${u.name} selected ${companionName} with ID ${companionId}`);
+    const INPUT_ID = `select-${u.id}`;
+    const companionId = html[INPUT_ID].value
+
     if (companionId !== '0') {
       let companionActor = companions.find(c => c.uuid === companionId);
       await setOwner(companionActor, u.id, OWNERSHIP[defaultOwnership]);
@@ -84,18 +85,18 @@ async function setCompanions(html, users, companions) {
 
 async function setOwner(companionActor, userId, defaultOwnership) {
   if (!companionActor) return;
-  
+
   let owners = {};
-  owners ['default'] = defaultOwnership;
-  owners [userId] = OWNERSHIP.OWNER;
+  owners['default'] = defaultOwnership;
+  owners[userId] = OWNERSHIP.OWNER;
   await companionActor.update({ 'ownership': owners });
 }
 
 async function setCaregiverId(companionActor, caregiverActor) {
   if (!caregiverActor) return;
-  
+
   if (!companionActor.items.find(i => i.name === 'Companion')) return;
-  
+
   const COMPANION_EFFECT_DATA = {
     name: 'Companion',
     origin: caregiverActor.uuid,
@@ -105,11 +106,11 @@ async function setCaregiverId(companionActor, caregiverActor) {
         key: 'CaregiverId',
         value: caregiverActor.uuid,
         mode: 0,
-        priority: 20 
+        priority: 20
       }
     ]
   };
-  
+
   const CAREGIVER_EFFECT_DATA = {
     name: 'Caregiver',
     origin: companionActor.uuid,
@@ -117,7 +118,7 @@ async function setCaregiverId(companionActor, caregiverActor) {
     changes: [
       {
         key: 'macro.execute',
-        value: `FerocityGM ${companionActor.uuid}`,
+        value: `function.pachos.mechanics.companion.addFerocity ${companionActor.uuid}`,
         mode: 0,
         priority: 20
       }
@@ -128,24 +129,24 @@ async function setCaregiverId(companionActor, caregiverActor) {
       }
     }
   };
-  
+
   await setClearEffect(companionActor, COMPANION_EFFECT_DATA);
   await setClearEffect(caregiverActor, CAREGIVER_EFFECT_DATA);
 }
 
 async function setClearEffect(actor, EFFECT_DATA) {
   if (!actor) return;
-  
+
   let effect = actor.appliedEffects.find(e => e.name === EFFECT_DATA.name);
   if (effect) {
     await MidiQOL.socket().executeAsGM('removeEffects', {
       actorUuid: actor.uuid,
-      effects: [ effect.id ]
+      effects: [effect.id]
     })
   }
-  
+
   await MidiQOL.socket().executeAsGM('createEffects', {
-     actorUuid: actor.uuid,
-     effects: [ EFFECT_DATA ]
-  });   
+    actorUuid: actor.uuid,
+    effects: [EFFECT_DATA]
+  });
 }
